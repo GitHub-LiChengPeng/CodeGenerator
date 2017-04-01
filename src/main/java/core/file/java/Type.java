@@ -203,6 +203,19 @@ public class Type {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 获取该类型所在的包名.
+     * </pre>
+     *
+     * @return {@code java.lang.String} - 包名
+     */
+    public String getPackageName() {
+        // 返回包名
+        return packageName;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 获取类型的全限定名.
      * </pre>
      *
