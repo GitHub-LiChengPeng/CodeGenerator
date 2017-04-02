@@ -7,7 +7,7 @@ package core.file.java;
  */
 public abstract class JavaComponent extends JavaElement {
     /**
-     * 组件类型
+     * 组件类型(在方法中表示返回值类型).
      */
     protected Type type;
 
