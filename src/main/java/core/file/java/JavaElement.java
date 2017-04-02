@@ -217,12 +217,12 @@ public abstract class JavaElement {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为Java元素放入关键字,具体由子类来实现.
+     * 为Java元素放入基本信息,具体由子类来实现.
      * </pre>
      *
      * @param javaElement Java元素
      */
-    protected abstract void putKeyWords(StringBuilder javaElement);
+    protected abstract void putInformation(StringBuilder javaElement);
 
     /**
      * <strong>Description:</strong>
