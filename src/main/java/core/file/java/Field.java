@@ -44,8 +44,8 @@ public class Field extends JavaComponent {
         putAnnotations(field, indentCount);
         // 缩进
         TextUtils.addIndentation(field, indentCount);
-        // 添加关键字
-        putKeyWords(field);
+        // 添加基本信息
+        putInformation(field);
         // 添加内容
         putContent(field, null);
         // 返回结果
@@ -55,13 +55,13 @@ public class Field extends JavaComponent {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 添加关键字.
+     * 添加基本信息.
      * </pre>
      *
      * @param field 属性
      */
     @Override
-    protected void putKeyWords(StringBuilder field) {
+    protected void putInformation(StringBuilder field) {
         // 添加访问控制符
         putVisibility(field);
         // 添加静态标志
