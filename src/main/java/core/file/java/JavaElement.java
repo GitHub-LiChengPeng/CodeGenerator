@@ -122,6 +122,73 @@ public abstract class JavaElement {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 为Java元素放入访问控制符.
+     * </pre>
+     *
+     * @param javaElement Java元素
+     */
+    protected void putVisibility(StringBuilder javaElement) {
+        // 放入操作
+        javaElement.append(visibility);
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 为Java元素放入静态标志.
+     * </pre>
+     *
+     * @param javaElement Java元素
+     */
+    protected void putStatic(StringBuilder javaElement) {
+        // 如果需要静态标志
+        if (isStatic) {
+            // 添加static关键字
+            javaElement.append("static");
+            // 添加空格
+            TextUtils.addSpace(javaElement);
+        }
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 为Java元素放入终结标志.
+     * </pre>
+     *
+     * @param javaElement Java元素
+     */
+    protected void putFinal(StringBuilder javaElement) {
+        // 如果需要终结标志
+        if (isFinal) {
+            // 添加final关键字
+            javaElement.append("final");
+            // 添加空格
+            TextUtils.addSpace(javaElement);
+        }
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 为Java元素放入抽象标志.
+     * </pre>
+     *
+     * @param javaElement Java元素
+     */
+    protected void putAbstract(StringBuilder javaElement) {
+        // 如果需要抽象标志
+        if (isAbstract) {
+            // 添加abstract关键字
+            javaElement.append("abstract");
+            // 添加空格
+            TextUtils.addSpace(javaElement);
+        }
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 为Java元素放入文档注释.
      * </pre>
      *
