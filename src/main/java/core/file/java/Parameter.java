@@ -133,5 +133,5 @@ public class Parameter extends JavaComponent {
      * 空方法
      */
     @Override
-    protected void putKeyWords(StringBuilder javaElement) {}
+    protected void putInformation(StringBuilder javaElement) {}
 }
