@@ -1,5 +1,6 @@
 package core.file.java;
 
+import core.util.JavaUtils;
 import core.util.TextUtils;
 
 import java.util.ArrayList;
@@ -11,32 +12,7 @@ import java.util.ListIterator;
  *
  * @author 李程鹏
  */
-public class Method {
-    /**
-     * 访问权限
-     */
-    private String visibility;
-
-    /**
-     * 是否是static方法
-     */
-    private boolean isStatic;
-
-    /**
-     * 是否是final方法
-     */
-    private boolean isFinal;
-
-    /**
-     * 方法返回值类型
-     */
-    private Type returnType;
-
-    /**
-     * 方法名
-     */
-    private String name;
-
+public class Method extends JavaComponent {
     /**
      * 是否是构造方法
      */
@@ -46,16 +22,6 @@ public class Method {
      * 是否是接口中的方法
      */
     private boolean isInterfaceMethod;
-
-    /**
-     * 文档注释
-     */
-    private List<String> documents = new ArrayList<>();
-
-    /**
-     * 方法注解
-     */
-    private List<String> annotations = new ArrayList<>();
 
     /**
      * 方法参数
@@ -71,71 +37,6 @@ public class Method {
      * 方法体
      */
     private List<String> statements = new ArrayList<>();
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置访问权限.
-     * </pre>
-     *
-     * @param visibility 访问权限
-     */
-    public void setVisibility(String visibility) {
-        // 赋值
-        this.visibility = visibility;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置static方法标志.
-     * </pre>
-     *
-     * @param isStatic static方法标志
-     */
-    public void setStatic(boolean isStatic) {
-        // 赋值
-        this.isStatic = isStatic;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置final方法标志.
-     * </pre>
-     *
-     * @param isFinal final方法标志
-     */
-    public void setFinal(boolean isFinal) {
-        // 赋值
-        this.isFinal = isFinal;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置返回值.
-     * </pre>
-     *
-     * @param returnType 返回值
-     */
-    public void setReturnType(Type returnType) {
-        // 赋值
-        this.returnType = returnType;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置方法名.
-     * </pre>
-     *
-     * @param name 方法名
-     */
-    public void setName(String name) {
-        // 赋值
-        this.name = name;
-    }
 
     /**
      * <strong>Description:</strong>
@@ -161,32 +62,6 @@ public class Method {
     public void setInterfaceMethod(boolean isInterfaceMethod) {
         // 赋值
         this.isInterfaceMethod = isInterfaceMethod;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 添加文档注释.
-     * </pre>
-     *
-     * @param document 文档注释
-     */
-    public void addDocument(String document) {
-        // 添加操作
-        documents.add(document);
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 添加注解.
-     * </pre>
-     *
-     * @param annotation 注解
-     */
-    public void addAnnotation(String annotation) {
-        // 添加操作
-        annotations.add(annotation);
     }
 
     /**
@@ -231,43 +106,27 @@ public class Method {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为方法放入文档注释信息.
+     * 输出方法内容.
      * </pre>
      *
-     * @param method      方法
      * @param indentCount 缩进次数
+     * @return {@code java.lang.String} - 方法内容
      */
-    private void putDocuments(StringBuilder method, int indentCount) {
-        // 遍历文档注释集合
-        for (String document : documents) {
-            // 缩进
-            TextUtils.addIndentation(method, indentCount);
-            // 添加文档内容
-            method.append(document);
-            // 换行
-            TextUtils.addLine(method);
-        }
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 为方法放入注解信息.
-     * </pre>
-     *
-     * @param method      方法
-     * @param indentCount 缩进次数
-     */
-    private void putAnnotations(StringBuilder method, int indentCount) {
-        // 遍历注解集合
-        for (String annotation : annotations) {
-            // 缩进
-            TextUtils.addIndentation(method, indentCount);
-            // 添加注解
-            method.append(annotation);
-            // 换行
-            TextUtils.addLine(method);
-        }
+    public String toString(int indentCount) {
+        // 定义并初始化方法内容变量
+        StringBuilder method = new StringBuilder();
+        // 添加文档注释
+        putDocuments(method, indentCount);
+        // 添加注解
+        putAnnotations(method, indentCount);
+        // 缩进
+        TextUtils.addIndentation(method, indentCount);
+        // 添加基本信息
+        putInformation(method);
+        // 添加内容
+        putContent(method, indentCount);
+        // 返回结果
+        return method.toString();
     }
 
     /**
@@ -278,129 +137,29 @@ public class Method {
      *
      * @param method 方法
      */
-    private void putInformation(StringBuilder method) {
-        // 如果不是接口的方法
-        if (!isInterfaceMethod) {
-            // 添加访问权限
-            method.append(visibility);
-            // 如果是static方法
-            if (isStatic) {
-                // 添加static关键字
-                method.append("static");
-                // 添加空格
-                TextUtils.addSpace(method);
-            }
-            // 如果是final方法
-            if (isFinal) {
-                // 添加final关键字
-                method.append("final");
-                // 添加空格
-                TextUtils.addSpace(method);
-            }
-            // 如果方法体为空
-            if (statements.size() == 0) {
-                // 添加abstract关键字
-                method.append("abstract");
-                // 添加空格
-                TextUtils.addSpace(method);
-            }
-        }
-        // 如果不是构造方法
-        if (!isConstructor) {
-            // 如果返回值为空
-            if (returnType == null) {
-                // 添加void关键字
-                method.append("void");
-            } else {// 如果返回值不为空
-                // 添加返回值类型
-                method.append(returnType.getTypeName());
-            }
-            // 加空格
-            TextUtils.addSpace(method);
-        }
+    @Override
+    protected void putInformation(StringBuilder method) {
+        // 添加关键字
+        putKeyWords(method);
         // 添加方法名
         method.append(name);
+        // 添加参数
+        putParameters(method);
+        // 添加异常
+        JavaUtils.putExceptions(method, exceptions);
     }
 
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为方法放入参数信息.
-     * </pre>
-     *
-     * @param method 方法
-     */
-    private void putParameters(StringBuilder method) {
-        // 添加左圆括号
-        method.append("(");
-        // 是否需要添加逗号
-        boolean needComma = false;
-        // 遍历参数集合
-        for (Parameter parameter : parameters) {
-            // 如果需要添加逗号
-            if (needComma) {
-                // 添加逗号
-                method.append(",");
-                // 添加空格
-                TextUtils.addSpace(method);
-            } else {
-                // 除了第一个参数,后边的参数在添加时都需要在参数前加上逗号..
-                needComma = true;
-            }
-            // 添加参数内容
-            method.append(parameter.toString());
-        }
-        // 添加右圆括号
-        method.append(")");
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 为方法放入异常信息.
-     * </pre>
-     *
-     * @param method 方法
-     */
-    private void putExceptions(StringBuilder method) {
-        // 如果方法需要抛出异常
-        if (exceptions.size() > 0) {
-            // 添加空格
-            TextUtils.addSpace(method);
-            // 添加throws关键字
-            method.append("throws");
-            // 添加空格
-            TextUtils.addSpace(method);
-            // 是否需要添加逗号
-            boolean needComma = false;
-            // 遍历异常信息集合
-            for (Type exception : exceptions) {
-                // 如果需要添加逗号
-                if (needComma) {
-                    // 添加逗号
-                    method.append(",");
-                    // 添加空格
-                    TextUtils.addSpace(method);
-                } else {
-                    // 除了第一个异常,后边的异常在添加时都需要在异常前加上逗号.
-                    needComma = true;
-                }
-                // 添加异常名
-                method.append(exception.getTypeName());
-            }
-        }
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 为方法放入方法语句.
+     * 为方法放入方法体内容.
      * </pre>
      *
      * @param method      方法
      * @param indentCount 缩进次数
      */
-    private void putStatements(StringBuilder method, int indentCount) {
+    @Override
+    protected void putContent(StringBuilder method, Integer indentCount) {
         // 如果方法体为空
         if (statements.size() == 0) {
             // 添加分号
@@ -466,30 +225,72 @@ public class Method {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 输出方法内容.
+     * 为方法放入关键字.
      * </pre>
      *
-     * @param indentCount 缩进次数
-     * @return {@code java.lang.String} - 方法内容
+     * @param method 方法
      */
-    public String toString(int indentCount) {
-        // 定义并初始化方法内容变量
-        StringBuilder method = new StringBuilder();
-        // 添加文档注释
-        putDocuments(method, indentCount);
-        // 添加注解
-        putAnnotations(method, indentCount);
-        // 缩进
-        TextUtils.addIndentation(method, indentCount);
-        // 添加基本信息
-        putInformation(method);
-        // 添加参数
-        putParameters(method);
-        // 添加异常
-        putExceptions(method);
-        // 添加方法体
-        putStatements(method, indentCount);
-        // 返回结果
-        return method.toString();
+    private void putKeyWords(StringBuilder method) {
+        // 如果不是接口的方法
+        if (!isInterfaceMethod) {
+            // 添加访问控制符
+            putVisibility(method);
+            // 添加静态标志
+            putStatic(method);
+            // 添加终结标志
+            putFinal(method);
+            // 如果方法体为空
+            if (statements.size() == 0) {
+                // 添加abstract关键字
+                method.append("abstract");
+                // 添加空格
+                TextUtils.addSpace(method);
+            }
+        }
+        // 如果不是构造方法
+        if (!isConstructor) {
+            // 如果返回值为空
+            if (type == null) {
+                // 添加void关键字
+                method.append("void");
+            } else {// 如果返回值不为空
+                // 添加返回值类型
+                method.append(type.getTypeName());
+            }
+            // 添加空格
+            TextUtils.addSpace(method);
+        }
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 为方法放入参数信息.
+     * </pre>
+     *
+     * @param method 方法
+     */
+    private void putParameters(StringBuilder method) {
+        // 添加左圆括号
+        method.append("(");
+        // 是否需要添加逗号
+        boolean needComma = false;
+        // 遍历参数集合
+        for (Parameter parameter : parameters) {
+            // 如果需要添加逗号
+            if (needComma) {
+                // 添加逗号
+                method.append(",");
+                // 添加空格
+                TextUtils.addSpace(method);
+            } else {
+                // 除了第一个参数,后边的参数在添加时都需要在参数前加上逗号..
+                needComma = true;
+            }
+            // 添加参数内容
+            method.append(parameter.toString());
+        }
+        // 添加右圆括号
+        method.append(")");
     }
 }
