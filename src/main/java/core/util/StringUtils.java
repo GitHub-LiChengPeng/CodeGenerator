@@ -46,4 +46,63 @@ public class StringUtils {
         // 返回导入语句集合
         return importStatements;
     }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 将输入的字符串转成驼峰式字符串.
+     * </pre>
+     *
+     * @param input   输入的字符串
+     * @param isUpper 是否按照大驼峰式规则
+     * @return {@code java.lang.String} - 驼峰式字符串
+     */
+    public static String toCamelCase(String input, boolean isUpper) {
+        // 定义结果值变量
+        StringBuilder output = new StringBuilder();
+        // 用于判断下一个字符是否需要大写的标志
+        boolean nextUpperCase = false;
+        // 循环遍历输入字符串的每一个字符
+        for (int i = 0; i < input.length(); i++) {
+            // 取出当前字符
+            char c = input.charAt(i);
+            // 分情况处理字符
+            switch (c) {
+                // 如果当前字符是一些特殊的分隔符
+                case '_':
+                case '-':
+                case '@':
+                case '$':
+                case '#':
+                case ' ':
+                case '/':
+                case '&':
+                    // 如果结果值中存在了字符
+                    if (output.length() > 0) {
+                        // 下一个字符需要大写
+                        nextUpperCase = true;
+                    }
+                    break;
+                default:// 如果当前字符是字母
+                    // 如果该字符需要大写
+                    if (nextUpperCase) {
+                        // 将该字符的大写形式放入结果变量中
+                        output.append(Character.toUpperCase(c));
+                        // 设置标志值为假
+                        nextUpperCase = false;
+                    } else {// 如果当前字符不需要大写
+                        // 将该字符的小写形式放入结果变量中
+                        output.append(Character.toLowerCase(c));
+                    }
+                    break;
+            }
+        }
+        // 如果需要按照大驼峰规则来转换
+        if (isUpper) {
+            // 将结果值变量中的第一个字符变成大写
+            output.setCharAt(0, Character.toUpperCase(output.charAt(0)));
+        }
+        // 返回结果值
+        return output.toString();
+    }
 }
