@@ -101,7 +101,7 @@ public class DatabaseReader {
      * 通过表格名读取表格列信息.
      * </pre>
      *
-     * @param tableName
+     * @param tableName 表格名
      * @return {@code java.util.List<core.database.Column>} - 列集合
      */
     private List<Column> readColumns(String tableName) throws Exception {
