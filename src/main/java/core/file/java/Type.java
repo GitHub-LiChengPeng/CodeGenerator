@@ -53,6 +53,19 @@ public class Type {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 判断类型是否需要导入.
+     * </pre>
+     *
+     * @return {@code boolean} - 判断结果
+     */
+    public boolean isNeedImport() {
+        // 返回判断结果
+        return needImport;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 解析值.
      * </pre>
      *
