@@ -11,7 +11,7 @@ import java.util.StringTokenizer;
  *
  * @author 李程鹏
  */
-public class Type {
+public class Type implements Comparable<Type> {
     /**
      * 全限定名
      */
@@ -348,5 +348,19 @@ public class Type {
         Type other = (Type) object;
         // 如果两个对象的全限定名相等,则这两个对象相等.
         return getFullName().equals(other.getFullName());
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 比较两个类型(需要实现Comparable接口是因为TreeMap放入元素时需要排序).
+     * </pre>
+     *
+     * @param other 另外一个类型
+     * @return {@code int} - 比较结果
+     */
+    public int compareTo(Type other) {
+        // 返回比较结果
+        return getFullName().compareTo(other.getFullName());
     }
 }
