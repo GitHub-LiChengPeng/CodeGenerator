@@ -41,4 +41,30 @@ public abstract class JavaComponent extends JavaElement {
         // 赋值
         this.name = name;
     }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 获取组件类型.
+     * </pre>
+     *
+     * @return {@code core.file.java.Type} - 组件类型
+     */
+    public Type getType() {
+        // 返回组件类型
+        return type;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 获取组件名.
+     * </pre>
+     *
+     * @return {@code java.lang.String} - 组件名
+     */
+    public String getName() {
+        // 返回组件名
+        return name;
+    }
 }
