@@ -6,6 +6,7 @@ import core.file.java.*;
 import core.file.java.Class;
 import core.generator.Generator;
 import core.resolver.TypeResolver;
+import core.util.PackageUtils;
 
 import java.util.List;
 
@@ -26,13 +27,13 @@ public class POJOGenerator extends Generator {
      * 构造初始化实例.
      * </pre>
      *
-     * @param table       表格对象
-     * @param packageName 包名
+     * @param
      */
-    public POJOGenerator(Table table, String packageName) {
+    public POJOGenerator(Table table) {
         // 调用父类构造函数
         super(table);
-        this.classType = new Type(packageName + getTableName());
+        // 初始化类的类型(类名).
+        this.classType = new Type(PackageUtils.ENTITY.getValue() + getTableName());
     }
 
     /**

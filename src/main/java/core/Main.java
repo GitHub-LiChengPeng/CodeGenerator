@@ -1,10 +1,9 @@
 package core;
 
-import core.file.java.Class;
 import core.database.DatabaseReader;
 import core.database.Table;
 import core.file.java.Interface;
-import core.generator.InterfaceGenerator;
+import core.file.java.Class;
 import core.generator.dao.*;
 
 import java.util.List;
@@ -26,13 +25,15 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         List<Table> tables = new DatabaseReader("root", "root", "test").readTables();
-       /* POGenerator generator = new POGenerator(tables.get(0));
-        Class class_ = generator.generate("core.pojo.");*/
-       // System.out.print(class_.toString(0));
 
+        POGenerator poGenerator = new POGenerator(tables.get(0));
+        Class class_ = poGenerator.generate();
+        System.out.println(class_.toString(0));
 
-        InterfaceGenerator generator1 = new InterfaceGenerator(tables.get(0),"core.dao.");
-        Interface i = generator1.generate();
-        System.out.print(i.toString());
+        System.out.println("--------------------------------------------");
+
+        DaoGenerator daoGenerator = new DaoGenerator(tables.get(0));
+        Interface interface_ = daoGenerator.generate();
+        System.out.println(interface_.toString());
     }
 }

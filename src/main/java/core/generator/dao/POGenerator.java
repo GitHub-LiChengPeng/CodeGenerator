@@ -21,12 +21,11 @@ public class POGenerator extends POJOGenerator {
      * 构造初始化实例.
      * </pre>
      *
-     * @param table       表格对象
-     * @param packageName 包名
+     * @param
      */
-    public POGenerator(Table table, String packageName) {
+    public POGenerator(Table table) {
         // 调用父类的构造方法
-        super(table, packageName);
+        super(table);
     }
 
     /**

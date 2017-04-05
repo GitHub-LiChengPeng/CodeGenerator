@@ -66,6 +66,19 @@ public class Type implements Comparable<Type> {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 添加泛型参数.
+     * </pre>
+     *
+     * @param type 类型
+     */
+    public void addTypeArgument(Type type) {
+        // 添加入集合
+        typeArguments.add(type);
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 解析值.
      * </pre>
      *
