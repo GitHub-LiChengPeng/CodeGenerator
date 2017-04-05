@@ -31,7 +31,7 @@ public abstract class Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 获取表格名.
+     * 获取驼峰样式的表格名.
      * </pre>
      *
      * @return {@code java.lang.String} - 表格名
@@ -44,7 +44,7 @@ public abstract class Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 获取列名.
+     * 获取驼峰样式的列名.
      * </pre>
      *
      * @param column 列对象
@@ -61,8 +61,7 @@ public abstract class Generator {
      * 生成代码.
      * </pre>
      *
-     * @param packageName 包名
      * @return {@code java.lang.Object} - 生成的代码字符串
      */
-    protected abstract Object generate(String packageName);
+    protected abstract Object generate();
 }

@@ -10,22 +10,29 @@ import core.resolver.TypeResolver;
 import java.util.List;
 
 /**
- * 简单Java类生成器.
+ * 简单Java对象(Plain Ordinary Java Object)生成器.
  *
  * @author 李程鹏
  */
 public class POJOGenerator extends Generator {
+    /**
+     * 类的类型(类名)
+     */
+    protected Type classType;
+
     /**
      * <strong>Description:</strong>
      * <pre>
      * 构造初始化实例.
      * </pre>
      *
-     * @param table 表格对象
+     * @param table       表格对象
+     * @param packageName 包名
      */
-    public POJOGenerator(Table table) {
+    public POJOGenerator(Table table, String packageName) {
         // 调用父类构造函数
         super(table);
+        this.classType = new Type(packageName + getTableName());
     }
 
     /**
@@ -34,17 +41,14 @@ public class POJOGenerator extends Generator {
      * 生成代码.
      * </pre>
      *
-     * @param packageName 包名
      * @return {@code core.file.java.Class} - 生成的POJO类
      */
     @Override
-    public Class generate(String packageName) {
-        // 定义并初始化类的类型(类名).
-        Type type = new Type(packageName + getTableName());
+    public Class generate() {
         // 新建一个类
         Class class_ = new Class();
         // 设置类的类型
-        class_.setType(type);
+        class_.setType(classType);
         // 设置类的访问控制符
         class_.setVisibility("public ");
         // 获取表中的所有列
@@ -81,7 +85,7 @@ public class POJOGenerator extends Generator {
      * @param class_ 类
      * @param field  属性
      */
-    private void generateGetterMethod(Class class_, Field field) {
+    protected void generateGetterMethod(Class class_, Field field) {
         // 获取属性的类型
         Type type = field.getType();
         // 获取属性名
@@ -152,7 +156,7 @@ public class POJOGenerator extends Generator {
      * @param class_ 类
      * @param field  属性
      */
-    private void generateSetterMethod(Class class_, Field field) {
+    protected void generateSetterMethod(Class class_, Field field) {
         // 获取属性的类型
         Type type = field.getType();
         // 获取属性名
