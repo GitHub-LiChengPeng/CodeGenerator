@@ -29,7 +29,7 @@ public class FileUtils {
      */
     public static void generateFile(String relativePath, String fileName, String content) throws Exception {
         // 拼接出文件的绝对路径
-        String absolutePath = desktop + relativePath;
+        String absolutePath = desktop + "\\Project" + relativePath;
         // 定义文件路径对象
         File directory = new File(absolutePath);
         // 如果路径不存在
