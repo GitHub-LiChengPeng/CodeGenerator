@@ -3,40 +3,19 @@ package core.generator.dao;
 import core.database.Table;
 import core.file.java.*;
 import core.file.java.Class;
-import core.generator.Generator;
+import core.generator.ClassGenerator;
 import core.util.PackageUtils;
-import core.util.StringUtils;
 
 /**
  * Dao层实现类生成器.
  *
  * @author 李程鹏
  */
-public class DaoImplGenerator extends Generator {
-    /**
-     * 类的类型
-     */
-    private Type classType;
-
-    /**
-     * 实现类需要操作的实体类型
-     */
-    private Type entityType;
-
-    /**
-     * 实现类需要实现的接口类型
-     */
-    private Type daoType;
-
+public class DaoImplGenerator extends ClassGenerator {
     /**
      * 代码中使用的会话工厂类型
      */
     private Type sessionFactoryType;
-
-    /**
-     * 需要操作的实体类型名
-     */
-    private String entityTypeName;
 
     /**
      * 公用的注释
@@ -61,14 +40,10 @@ public class DaoImplGenerator extends Generator {
         super(table);
         // 初始化类的类型
         this.classType = new Type(PackageUtils.DAO_IMPL.getValue() + getTableName() + "DaoImpl");
-        // 初始化实体类型
-        this.entityType = new Type(PackageUtils.ENTITY.getValue() + getTableName());
         // 初始化接口类型
-        this.daoType = new Type(PackageUtils.DAO.getValue() + getTableName() + "Dao");
+        this.interfaceType = new Type(PackageUtils.DAO.getValue() + getTableName() + "Dao");
         // 初始化会话工厂类型
         this.sessionFactoryType = new Type("org.hibernate.SessionFactory");
-        // 初始化实体类型名
-        this.entityTypeName = entityType.getTypeName();
         // 初始化公用注释
         this.commonComment = "// 获取会话对象";
         // 初始化公用语句
@@ -89,46 +64,53 @@ public class DaoImplGenerator extends Generator {
         Class class_ = new Class();
         // 设置类的类型
         class_.setType(classType);
-        // 设置访问控制符
+        // 设置类的访问控制符
         class_.setVisibility("public ");
-        // 创建本类在Spring工厂中的名字
-        String name = StringUtils.toCamelCase(table.getName(), false) + "Dao";
-        // 添加注解
-        class_.addAnnotation("@Repository(\"" + name + "\")");
+        // 添加类的注解
+        class_.addAnnotation("@Repository(\"" + getBeanName("Dao") + "\")");
         // 为类生成属性
         generateField(class_);
         // 为类生成构造方法
         generateConstructor(class_);
-        // 为类生成添加方法
+        // 为类生成增加方法
         generateAddMethod(class_);
         // 为类生成删除方法
         generateDeleteMethod(class_);
-        // 为类生成更新方法
+        // 为类生成修改方法
         generateUpdateMethod(class_);
         // 为类生成查询方法(按主键查).
         generateReadOneMethod(class_);
         // 为类生成查询方法(查询所有).
         generateReadAllMethod(class_);
-        // 类需要实现Dao层接口
-        class_.addImplementedInterface(daoType);
+        // 添加类需要实现的接口
+        class_.addImplementedInterface(interfaceType);
+        // 添加类需要导入的类型
+        addImports(class_);
+        // 返回生成的类
+        return class_;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 添加类需要导入的类型
+     * </pre>
+     *
+     * @param class_ 类
+     */
+    private void addImports(Class class_) {
+        // 导入通用类型
+        addCommonImports(class_);
         // 导入接口类型
-        class_.addImport(daoType);
+        class_.addImport(interfaceType);
         // 导入实体类型
         class_.addImport(entityType);
         // 导入会话工厂类型
         class_.addImport(sessionFactoryType);
         // 导入会话类型
         class_.addImport(new Type("org.hibernate.Session"));
-        // 导入Autowired注解类型
-        class_.addImport(new Type("org.springframework.beans.factory.annotation.Autowired"));
-        // 导入Qualifier注解类型
-        class_.addImport(new Type("org.springframework.beans.factory.annotation.Qualifier"));
-        // 导入Repository注解类型
-        class_.addImport(new Type("org.springframework.stereotype.Repository"));
-        // 导入Criteria类型
+        // 导入条件对象类型
         class_.addImport(new Type("org.hibernate.Criteria"));
-        // 返回生成的类
-        return class_;
     }
 
     /**
@@ -171,16 +153,16 @@ public class DaoImplGenerator extends Generator {
         method.setVisibility("public ");
         // 设置构造函数标志
         method.setConstructor(true);
-        // 定义一个属性
+        // 定义一个参数
         Parameter parameter = new Parameter(sessionFactoryType, "sessionFactory");
-        // 为属性添加注解
+        // 为参数添加注解
         parameter.addAnnotation("@Qualifier(\"sessionFactory\")");
         // 设置方法名
         method.setName(classType.getTypeName());
         // 添加方法语句
         method.addStatement("// 为属性赋值");
         method.addStatement("this.sessionFactory = sessionFactory;");
-        // 为方法添加属性
+        // 为方法添加参数
         method.addParameter(parameter);
         // 为类添加方法
         class_.addMethod(method);
@@ -197,14 +179,8 @@ public class DaoImplGenerator extends Generator {
     private void generateAddMethod(Class class_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置访问控制符
-        method.setVisibility("public ");
-        // 设置方法名
-        method.setName("addEntity");
-        // 新建一个参数
-        Parameter parameter = new Parameter(entityType, "entity");
-        // 为方法添加参数
-        method.addParameter(parameter);
+        // 放入增加方法的基本信息
+        putAddMethodInfo(method);
         // 添加方法语句
         method.addStatement(commonComment);
         method.addStatement(commonStatement);
@@ -217,7 +193,7 @@ public class DaoImplGenerator extends Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为类添加删除方法.
+     * 为类生成删除方法.
      * </pre>
      *
      * @param class_ 类
@@ -225,14 +201,8 @@ public class DaoImplGenerator extends Generator {
     private void generateDeleteMethod(Class class_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置访问控制符
-        method.setVisibility("public ");
-        // 设置方法名
-        method.setName("deleteEntity");
-        // 新建一个参数
-        Parameter parameter = new Parameter(new Type("int"), "id");
-        // 为方法添加参数
-        method.addParameter(parameter);
+        // 放入删除方法的基本信息
+        putDeleteMethodInfo(method);
         // 为方法添加语句
         method.addStatement(commonComment);
         method.addStatement(commonStatement);
@@ -247,7 +217,7 @@ public class DaoImplGenerator extends Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为类添加修改方法.
+     * 为类生成修改方法.
      * </pre>
      *
      * @param class_ 类
@@ -255,14 +225,8 @@ public class DaoImplGenerator extends Generator {
     private void generateUpdateMethod(Class class_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置访问控制符
-        method.setVisibility("public ");
-        // 设置方法名
-        method.setName("updateEntity");
-        // 新建一个参数
-        Parameter parameter = new Parameter(entityType, "entity");
-        // 为方法添加参数
-        method.addParameter(parameter);
+        // 放入修改方法的基本信息
+        putUpdateMethodInfo(method);
         // 添加方法语句
         method.addStatement(commonComment);
         method.addStatement(commonStatement);
@@ -275,7 +239,7 @@ public class DaoImplGenerator extends Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为类添加查询方法(按主键查).
+     * 为类生成查询方法(按主键查).
      * </pre>
      *
      * @param class_ 类
@@ -283,16 +247,8 @@ public class DaoImplGenerator extends Generator {
     private void generateReadOneMethod(Class class_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置访问控制符
-        method.setVisibility("public ");
-        // 设置方法名
-        method.setName("readEntity");
-        // 设置方法的返回值类型
-        method.setType(entityType);
-        // 新建一个参数
-        Parameter parameter = new Parameter(new Type("int"), "id");
-        // 为方法添加参数
-        method.addParameter(parameter);
+        // 放入查询方法的基本信息
+        putReadOneMethodInfo(method);
         // 添加方法语句
         method.addStatement(commonComment);
         method.addStatement(commonStatement);
@@ -305,7 +261,7 @@ public class DaoImplGenerator extends Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 为类添加查询方法(查询所有).
+     * 为类生成查询方法(查询所有).
      * </pre>
      *
      * @param class_ 类
@@ -313,16 +269,8 @@ public class DaoImplGenerator extends Generator {
     private void generateReadAllMethod(Class class_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置访问控制符
-        method.setVisibility("public ");
-        // 设置方法名
-        method.setName("readEntities");
-        // 定义方法返回值类型
-        Type returnType = new Type("java.util.List");
-        // 设置返回值类型中的泛型参数
-        returnType.addTypeArgument(entityType);
-        // 为方法设置返回值类型
-        method.setType(returnType);
+        // 放入查询方法的基本信息
+        putReadAllMethodInfo(method);
         // 添加方法语句
         method.addStatement(commonComment);
         method.addStatement(commonStatement);
@@ -331,7 +279,7 @@ public class DaoImplGenerator extends Generator {
         method.addStatement("// 查询并返回结果集");
         method.addStatement("return criteria.list();");
         // 为类导入返回值类型
-        class_.addImport(returnType);
+        class_.addImport(method.getType());
         // 为类添加方法
         class_.addMethod(method);
     }

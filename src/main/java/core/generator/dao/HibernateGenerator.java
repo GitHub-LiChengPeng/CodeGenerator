@@ -5,11 +5,12 @@ import core.file.java.Class;
 import core.file.java.Interface;
 import core.util.FileUtils;
 import core.util.PathUtils;
+import core.util.StringUtils;
 
 import java.util.List;
 
 /**
- * Hibernate代码生成器.
+ * Hibernate持久层代码生成器.
  *
  * @author 李程鹏
  */
@@ -18,21 +19,6 @@ public class HibernateGenerator {
      * 表格集合
      */
     private List<Table> tables;
-
-    /**
-     * 持久化对象生成器
-     */
-    private POGenerator poGenerator;
-
-    /**
-     * Dao层接口生成器
-     */
-    private DaoGenerator daoGenerator;
-
-    /**
-     * Dao层实现类生成器
-     */
-    private DaoImplGenerator daoImplGenerator;
 
     /**
      * <strong>Description:</strong>
@@ -56,32 +42,57 @@ public class HibernateGenerator {
     public void generate() throws Exception {
         // 遍历表格集合
         for (Table table : tables) {
-            // 根据表格对象创建持久化对象生成器
-            poGenerator = new POGenerator(table);
-            // 根据表格对象创建Dao层接口生成器
-            daoGenerator = new DaoGenerator(table);
-            // 根据表格对象创建Dao层实现类生成器
-            daoImplGenerator = new DaoImplGenerator(table);
-            // 定义文件名变量
-            String fileName;
-            // 生成持久化对象
-            Class entity = poGenerator.generate();
-            // 创建持久化对象文件名
-            fileName = entity.getType().getTypeName() + ".java";
-            // 生成持久化对象文件
-            FileUtils.generateFile(PathUtils.ENTITY.getValue(), fileName, entity.toString(0));
-            // 生成Dao层接口
-            Interface dao = daoGenerator.generate();
-            // 创建Dao层接口文件名
-            fileName = dao.getType().getTypeName() + ".java";
+            // 生成实体类文件
+            generatePO(table);
             // 生成Dao层接口文件
-            FileUtils.generateFile(PathUtils.DAO.getValue(), fileName, dao.toString());
-            // 生成Dao层接口实现类
-            Class daoImpl = daoImplGenerator.generate();
-            // 创建Dao层接口实现类文件名
-            fileName = daoImpl.getType().getTypeName() + ".java";
-            // 生成Dao层接口实现类文件
-            FileUtils.generateFile(PathUtils.DAO_IMPL.getValue(), fileName, daoImpl.toString(0));
+            generateDao(table);
+            // 生成Dao层实现类文件
+            generateDaoImpl(table);
         }
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 根据表格对象生成实体类文件.
+     * </pre>
+     *
+     * @param table 表格对象
+     */
+    private void generatePO(Table table) throws Exception {
+        // 获取生成的实体类
+        Class entity = new POGenerator(table).generate();
+        // 根据实体类内容生成文件
+        FileUtils.generateFile(PathUtils.ENTITY.getValue(), StringUtils.getJavaFileName(entity), entity.toString(0));
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 根据表格对象生成Dao层接口文件.
+     * </pre>
+     *
+     * @param table 表格对象
+     */
+    private void generateDao(Table table) throws Exception {
+        // 获取生成的Dao接口对象
+        Interface dao = new DaoGenerator(table).generate();
+        // 根据接口内容生成文件
+        FileUtils.generateFile(PathUtils.DAO.getValue(), StringUtils.getJavaFileName(dao), dao.toString());
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 根据表格对象生成Dao层接口实现类文件.
+     * </pre>
+     *
+     * @param table 表格对象
+     */
+    private void generateDaoImpl(Table table) throws Exception {
+        // 获取生成的Dao接口实现类
+        Class daoImpl = new DaoImplGenerator(table).generate();
+        // 根据实现类的内容生成文件
+        FileUtils.generateFile(PathUtils.DAO_IMPL.getValue(), StringUtils.getJavaFileName(daoImpl), daoImpl.toString(0));
     }
 }

@@ -2,7 +2,8 @@ package core;
 
 import core.database.DatabaseReader;
 import core.database.Table;
-import core.generator.dao.*;
+import core.generator.dao.HibernateGenerator;
+import core.generator.service.SpringGenerator;
 
 import java.util.List;
 
@@ -25,5 +26,7 @@ public class Main {
         List<Table> tables = new DatabaseReader("root", "root", "test").readTables();
         // 生成Dao层代码(Hibernate).
         new HibernateGenerator(tables).generate();
+        // 生成Service层代码(Spring).
+        new SpringGenerator(tables).generate();
     }
 }

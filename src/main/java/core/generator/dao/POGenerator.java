@@ -21,7 +21,7 @@ public class POGenerator extends POJOGenerator {
      * 构造初始化实例.
      * </pre>
      *
-     * @param
+     * @param table 表格对象
      */
     public POGenerator(Table table) {
         // 调用父类的构造方法

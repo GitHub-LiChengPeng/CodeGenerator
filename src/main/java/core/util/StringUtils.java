@@ -1,6 +1,8 @@
 package core.util;
 
+import core.file.java.Interface;
 import core.file.java.Type;
+import core.file.java.Class;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -104,5 +106,33 @@ public class StringUtils {
         }
         // 返回结果值
         return output.toString();
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 根据类对象生成文件名.
+     * </pre>
+     *
+     * @param class_ 类对象
+     * @return {@code java.lang.String} - 文件名
+     */
+    public static String getJavaFileName(Class class_) {
+        // 返回对应的文件名
+        return class_.getType().getTypeName() + ".java";
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 根据接口对象生成文件名.
+     * </pre>
+     *
+     * @param interface_ 接口对象
+     * @return {@code java.lang.String} - 文件名
+     */
+    public static String getJavaFileName(Interface interface_) {
+        // 返回对应的文件名
+        return interface_.getType().getTypeName() + ".java";
     }
 }
