@@ -32,6 +32,19 @@ public abstract class JavaFile extends JavaElement {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 获取类型.
+     * </pre>
+     *
+     * @return {@code core.file.java.Type} - 类型
+     */
+    public Type getType() {
+        // 返回类型
+        return type;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 设置类型.
      * </pre>
      *
