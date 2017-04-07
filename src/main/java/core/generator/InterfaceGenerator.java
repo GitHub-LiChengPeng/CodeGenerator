@@ -38,7 +38,6 @@ public class InterfaceGenerator extends Generator {
         this.entityType = new Type(PackageUtils.ENTITY.getValue() + getTableName());
     }
 
-
     /**
      * <strong>Description:</strong>
      * <pre>
