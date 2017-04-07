@@ -2,6 +2,7 @@ package core;
 
 import core.database.DatabaseReader;
 import core.database.Table;
+import core.generator.controller.SpringMVCGenerator;
 import core.generator.dao.HibernateGenerator;
 import core.generator.service.SpringGenerator;
 
@@ -28,5 +29,7 @@ public class Main {
         new HibernateGenerator(tables).generate();
         // 生成Service层代码(Spring).
         new SpringGenerator(tables).generate();
+        // 生成Controller层代码(SpringMVC)
+        new SpringMVCGenerator(tables).generate();
     }
 }
