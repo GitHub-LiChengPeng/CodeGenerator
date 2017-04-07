@@ -67,6 +67,19 @@ public class Method extends JavaComponent {
     /**
      * <strong>Description:</strong>
      * <pre>
+     * 返回方法的参数.
+     * </pre>
+     *
+     * @return {@code java.util.List<core.file.java.Parameter>} - 参数集合
+     */
+    public List<Parameter> getParameters() {
+        // 返回参数集合
+        return parameters;
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
      * 添加参数.
      * </pre>
      *
