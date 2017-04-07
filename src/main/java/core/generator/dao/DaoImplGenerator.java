@@ -67,7 +67,7 @@ public class DaoImplGenerator extends ClassGenerator {
         // 设置类的访问控制符
         class_.setVisibility("public ");
         // 添加类的注解
-        class_.addAnnotation("@Repository(\"" + getBeanName("Dao") + "\")");
+        class_.addAnnotation("@Repository(\"" + getCommonName("Dao") + "\")");
         // 为类生成属性
         generateField(class_);
         // 为类生成构造方法
