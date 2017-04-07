@@ -89,6 +89,8 @@ public class ControllerGenerator extends ClassGenerator {
     private void addImports(Class class_) {
         // 为类导入通用类型
         addCommonImports(class_);
+        // 导入接口的类型
+        class_.addImport(serviceType);
         // 导入实体类型
         class_.addImport(entityType);
         // 导入的这个包下包含@RequestMapping,@ResponseBody和@PathVariable

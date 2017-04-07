@@ -90,6 +90,8 @@ public class ServiceImplGenerator extends ClassGenerator {
         addCommonImports(class_);
         // 导入接口类型
         class_.addImport(interfaceType);
+        // 导入被注入的接口类型
+        class_.addImport(daoType);
         // 导入实体类型
         class_.addImport(entityType);
         // 导入事务标签类型
