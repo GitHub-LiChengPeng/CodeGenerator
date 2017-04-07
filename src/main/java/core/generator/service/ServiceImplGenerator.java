@@ -55,7 +55,7 @@ public class ServiceImplGenerator extends ClassGenerator {
         // 设置访问控制符
         class_.setVisibility("public ");
         // 添加注解
-        class_.addAnnotation("@Service(\"" + getBeanName("Service") + "\")");
+        class_.addAnnotation("@Service(\"" + getCommonName("Service") + "\")");
         class_.addAnnotation("@Transactional");
         // 为类生成属性
         generateField(class_);
@@ -115,7 +115,7 @@ public class ServiceImplGenerator extends ClassGenerator {
         field.setName("dao");
         // 为属性添加注解
         field.addAnnotation("@Autowired");
-        field.addAnnotation("@Qualifier(\"" + getBeanName("Dao") + "\")");
+        field.addAnnotation("@Qualifier(\"" + getCommonName("Dao") + "\")");
         // 为类添加属性
         class_.addField(field);
     }
