@@ -76,6 +76,6 @@ public class SpringGenerator {
         // 获取生成的Service接口实现类
         Class serviceImpl = new ServiceImplGenerator(table).generate();
         // 根据实现类的内容生成文件
-        FileUtils.generateFile(PathUtils.SERVICE.getValue(), StringUtils.getJavaFileName(serviceImpl), serviceImpl.toString(0));
+        FileUtils.generateFile(PathUtils.SERVICE_IMPL.getValue(), StringUtils.getJavaFileName(serviceImpl), serviceImpl.toString(0));
     }
 }
