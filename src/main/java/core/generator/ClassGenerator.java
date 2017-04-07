@@ -54,15 +54,15 @@ public abstract class ClassGenerator extends Generator {
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 获取被放入Spring工厂中(使用@Repository等标签放入)对象的名字.
+     * 获取通用变量名.
      * </pre>
      *
-     * @param kind 类型(Dao或者Service)
-     * @return {@code java.lang.String} - 对象名
+     * @param suffix 自定义后缀
+     * @return {@code java.lang.String} - 变量名
      */
-    protected String getBeanName(String kind) {
-        // 返回对象名
-        return StringUtils.toCamelCase(table.getName(), false) + kind;
+    protected String getCommonName(String suffix) {
+        // 返回变量名
+        return StringUtils.toCamelCase(table.getName(), false) + suffix;
     }
 
     /**
