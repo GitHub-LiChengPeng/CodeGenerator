@@ -20,6 +20,11 @@ public class ServiceImplGenerator extends ClassGenerator {
     private Type daoType;
 
     /**
+     * Dao层接口名字
+     */
+    private String daoName;
+
+    /**
      * <strong>Description:</strong>
      * <pre>
      * 构造初始化生成器对象.
@@ -36,6 +41,8 @@ public class ServiceImplGenerator extends ClassGenerator {
         this.interfaceType = new Type(PackageUtils.SERVICE.getValue() + getTableName() + "Service");
         // 初始化Dao接口类型
         this.daoType = new Type(PackageUtils.DAO.getValue() + getTableName() + "Dao");
+        // 初始化Dao层接口的名字
+        this.daoName = getCommonName("Dao");
     }
 
     /**
@@ -114,10 +121,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         // 设置属性类型
         field.setType(daoType);
         // 设置属性名
-        field.setName("dao");
+        field.setName(daoName);
         // 为属性添加注解
         field.addAnnotation("@Autowired");
-        field.addAnnotation("@Qualifier(\"" + getCommonName("Dao") + "\")");
+        field.addAnnotation("@Qualifier(\"" + daoName + "\")");
         // 为类添加属性
         class_.addField(field);
     }
@@ -135,8 +142,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入增加方法的基本信息
         putAddMethodInfo(method);
+        // 添加注释
+        method.addStatement("// 调用持久层接口添加实体对象");
         // 添加方法语句
-        method.addStatement("dao.addEntity(entity);");
+        method.addStatement(daoName + ".addEntity(entity);");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -154,8 +163,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入删除方法的基本信息
         putDeleteMethodInfo(method);
+        // 添加注释
+        method.addStatement("// 调用持久层接口删除实体对象");
         // 添加方法语句
-        method.addStatement("dao.deleteEntity(id);");
+        method.addStatement(daoName + ".deleteEntity(id);");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -173,8 +184,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入修改方法的基本信息
         putUpdateMethodInfo(method);
+        // 添加注释
+        method.addStatement("// 调用持久层接口修改实体对象");
         // 添加方法语句
-        method.addStatement("dao.updateEntity(entity);");
+        method.addStatement(daoName + ".updateEntity(entity);");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -192,8 +205,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入查询方法的基本信息
         putReadOneMethodInfo(method);
+        // 添加注释
+        method.addStatement("// 调用持久层接口查询实体对象");
         // 添加方法语句
-        method.addStatement("return dao.readEntity(id);");
+        method.addStatement("return " + daoName + ".readEntity(id);");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -211,8 +226,10 @@ public class ServiceImplGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入查询方法的基本信息
         putReadAllMethodInfo(method);
+        // 添加注释
+        method.addStatement("// 调用持久层接口查询实体对象集合");
         // 添加方法语句
-        method.addStatement("return dao.readEntities();");
+        method.addStatement("return " + daoName + ".readEntities();");
         // 为类导入返回值类型
         class_.addImport(method.getType());
         // 为类添加方法
