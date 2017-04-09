@@ -1,6 +1,5 @@
 package core.util;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,11 +12,6 @@ import java.io.OutputStreamWriter;
  */
 public class FileUtils {
     /**
-     * 本机的桌面路径
-     */
-    private static String desktop = FileSystemView.getFileSystemView().getHomeDirectory().getPath();
-
-    /**
      * <strong>Description:</strong>
      * <pre>
      * 生成文件.
@@ -28,8 +22,10 @@ public class FileUtils {
      * @param content      文件内容
      */
     public static void generateFile(String relativePath, String fileName, String content) throws Exception {
+        // 获取工程的相对路径
+        String projectPath = "\\" + NameUtils.PROJECT.getValue();
         // 拼接出文件的绝对路径
-        String absolutePath = desktop + "\\Project" + relativePath;
+        String absolutePath = PathUtils.DESKTOP.getValue() + projectPath + relativePath;
         // 定义文件路径对象
         File directory = new File(absolutePath);
         // 如果路径不存在
