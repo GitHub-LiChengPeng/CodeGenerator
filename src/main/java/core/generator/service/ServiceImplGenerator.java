@@ -57,13 +57,15 @@ public class ServiceImplGenerator extends ClassGenerator {
     public Class generate() {
         // 新建一个类
         Class class_ = new Class();
-        // 设置类的类型
-        class_.setType(classType);
-        // 设置访问控制符
-        class_.setVisibility("public ");
-        // 添加注解
+        // 设置类的文档注释
+        generateFileDocument(class_, "操作" + table.getRemark() + "对象的业务层代码");
+        // 添加类的注解
         class_.addAnnotation("@Service(\"" + getCommonName("Service") + "\")");
         class_.addAnnotation("@Transactional");
+        // 设置访问控制符
+        class_.setVisibility("public ");
+        // 设置类的类型
+        class_.setType(classType);
         // 为类生成属性
         generateField(class_);
         // 为类生成增加方法
@@ -116,15 +118,17 @@ public class ServiceImplGenerator extends ClassGenerator {
     private void generateField(Class class_) {
         // 新建一个属性
         Field field = new Field();
+        // 添加属性的文档注释
+        generateFieldDocument(field, "持久层接口");
+        // 为属性添加注解
+        field.addAnnotation("@Autowired");
+        field.addAnnotation("@Qualifier(\"" + daoName + "\")");
         // 设置访问控制符
         field.setVisibility("private ");
         // 设置属性类型
         field.setType(daoType);
         // 设置属性名
         field.setName(daoName);
-        // 为属性添加注解
-        field.addAnnotation("@Autowired");
-        field.addAnnotation("@Qualifier(\"" + daoName + "\")");
         // 为类添加属性
         class_.addField(field);
     }
