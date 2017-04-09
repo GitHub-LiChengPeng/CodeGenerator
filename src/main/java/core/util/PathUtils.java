@@ -1,5 +1,7 @@
 package core.util;
 
+import javax.swing.filechooser.FileSystemView;
+
 /**
  * 路径枚举类.
  *
@@ -17,7 +19,21 @@ public enum PathUtils {
     // dao接口实现类生成的相对路径
     DAO_IMPL("\\src\\main\\java\\core\\dao\\impl\\"),
     // 实体类生成的相对路径
-    ENTITY("\\src\\main\\java\\core\\entity\\");
+    ENTITY("\\src\\main\\java\\core\\entity\\"),
+    // 模板文件存放的相对路径
+    FTL_TEMPLATE("\\src\\main\\resources\\ftl\\"),
+    // 本机桌面的绝对路径
+    DESKTOP(FileSystemView.getFileSystemView().getHomeDirectory().getPath()),
+    // 本工程文件夹所在的绝对路径
+    PROJECT(System.getProperty("user.dir")),
+    // web.xml生成的相对路径
+    WEB_XML("\\web\\WEB-INF\\"),
+    // SpringMVC配置文件生成的相对路径
+    SPRING_MVC_CONFIG("\\src\\main\\resources\\"),
+    // Spring配置文件生成的相对路径
+    SPRING_CONFIG("\\src\\main\\resources\\"),
+    // Hibernate配置文件生成的相对路径
+    HIBERNATE_CONFIG("\\src\\main\\resources\\");
 
     /**
      * 枚举值
