@@ -3,9 +3,7 @@ package core.generator;
 import core.database.Table;
 import core.file.java.Interface;
 import core.file.java.Method;
-import core.file.java.Parameter;
 import core.file.java.Type;
-import core.util.PackageUtils;
 
 /**
  * 接口生成器.
@@ -19,9 +17,9 @@ public class InterfaceGenerator extends Generator {
     protected Type interfaceType;
 
     /**
-     * 接口操作的实体类型
+     * 接口文件注释
      */
-    protected Type entityType;
+    protected String comment;
 
     /**
      * <strong>Description:</strong>
@@ -34,8 +32,6 @@ public class InterfaceGenerator extends Generator {
     public InterfaceGenerator(Table table) {
         // 调用父类的构造函数
         super(table);
-        // 实例化实体的类型
-        this.entityType = new Type(PackageUtils.ENTITY.getValue() + getTableName());
     }
 
     /**
@@ -50,10 +46,12 @@ public class InterfaceGenerator extends Generator {
     public Interface generate() {
         // 新建一个接口
         Interface interface_ = new Interface();
-        // 设置接口的类型
-        interface_.setType(interfaceType);
+        // 设置接口的文档注释
+        generateFileDocument(interface_, comment);
         // 设置设置访问控制符
         interface_.setVisibility("public ");
+        // 设置接口的类型
+        interface_.setType(interfaceType);
         // 为接口生成添加方法
         generateAddMethod(interface_);
         // 为接口生成删除方法
@@ -64,6 +62,8 @@ public class InterfaceGenerator extends Generator {
         generateReadOneMethod(interface_);
         // 为接口生成查询方法(查询所有).
         generateReadAllMethod(interface_);
+        // 为接口导入实体类型
+        interface_.addImport(entityType);
         // 返回接口
         return interface_;
     }
@@ -79,12 +79,8 @@ public class InterfaceGenerator extends Generator {
     private void generateAddMethod(Interface interface_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置方法名
-        method.setName("addEntity");
-        // 设置方法的参数
-        method.addParameter(new Parameter(entityType, "entity"));
-        // 为接口添加需要导入的类型
-        interface_.addImport(entityType);
+        // 放入增加方法的基本信息
+        putAddMethodInfo(method);
         // 为接口添加该方法
         interface_.addMethod(method);
     }
@@ -100,13 +96,11 @@ public class InterfaceGenerator extends Generator {
     private void generateDeleteMethod(Interface interface_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置方法名
-        method.setName("deleteEntity");
-        // 定义参数类型
-        Type parameterType = new Type("int");
-        // 为方法设置参数
-        method.addParameter(new Parameter(parameterType, "id"));
-        // 为接口添加需要导入的类型
+        // 放入删除方法的基本信息
+        putDeleteMethodInfo(method);
+        // 获取方法的参数类型
+        Type parameterType = method.getParameters().get(0).getType();
+        // 为接口导入参数类型
         interface_.addImport(parameterType);
         // 为接口添加该方法
         interface_.addMethod(method);
@@ -123,12 +117,8 @@ public class InterfaceGenerator extends Generator {
     private void generateUpdateMethod(Interface interface_) {
         // 新建一个方法
         Method method = new Method();
-        // 添加方法名
-        method.setName("updateEntity");
-        // 为方法设置参数
-        method.addParameter(new Parameter(entityType, "entity"));
-        // 为接口添加需要导入的类型
-        interface_.addImport(entityType);
+        // 放入修改方法的基本信息
+        putUpdateMethodInfo(method);
         // 为接口添加该方法
         interface_.addMethod(method);
     }
@@ -144,17 +134,11 @@ public class InterfaceGenerator extends Generator {
     private void generateReadOneMethod(Interface interface_) {
         // 新建一个方法
         Method method = new Method();
-        // 设置方法名
-        method.setName("readEntity");
-        // 设置方法返回值类型
-        method.setType(entityType);
-        // 定义参数类型
-        Type parameterType = new Type("int");
-        // 为方法设置参数
-        method.addParameter(new Parameter(parameterType, "id"));
-        // 为接口添加需要导入的返回值类型
-        interface_.addImport(entityType);
-        // 为接口添加需要导入的参数类型
+        // 放入查询方法(按主键查)的基本信息
+        putReadOneMethodInfo(method);
+        // 获取方法的参数类型
+        Type parameterType = method.getParameters().get(0).getType();
+        // 为接口导入参数类型
         interface_.addImport(parameterType);
         // 为接口添加该方法
         interface_.addMethod(method);
@@ -171,18 +155,10 @@ public class InterfaceGenerator extends Generator {
     private void generateReadAllMethod(Interface interface_) {
         // 新建一个方法
         Method method = new Method();
-        // 定义方法返回值类型
-        Type returnType = new Type("java.util.List");
-        // 为方法的返回值类型添加泛型参数
-        returnType.addTypeArgument(entityType);
-        // 设置方法名
-        method.setName("readEntities");
-        // 设置方法返回值类型
-        method.setType(returnType);
+        // 放入查询方法(查询所有)的基本信息
+        putReadAllMethodInfo(method);
         // 为接口添加需要导入的返回值类型
-        interface_.addImport(returnType);
-        // 为接口添加需要导入的实体类型
-        interface_.addImport(entityType);
+        interface_.addImport(method.getType());
         // 为接口添加该方法
         interface_.addMethod(method);
     }
