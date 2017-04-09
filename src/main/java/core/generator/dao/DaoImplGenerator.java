@@ -62,12 +62,14 @@ public class DaoImplGenerator extends ClassGenerator {
     public Class generate() {
         // 新建一个类
         Class class_ = new Class();
-        // 设置类的类型
-        class_.setType(classType);
-        // 设置类的访问控制符
-        class_.setVisibility("public ");
+        // 设置类的文档注释
+        generateFileDocument(class_, "操作" + table.getRemark() + "对象的持久层代码");
         // 添加类的注解
         class_.addAnnotation("@Repository(\"" + getCommonName("Dao") + "\")");
+        // 设置类的访问控制符
+        class_.setVisibility("public ");
+        // 设置类的类型
+        class_.setType(classType);
         // 为类生成属性
         generateField(class_);
         // 为类生成构造方法
@@ -124,6 +126,8 @@ public class DaoImplGenerator extends ClassGenerator {
     private void generateField(Class class_) {
         // 新建一个属性
         Field field = new Field();
+        // 添加属性的文档注释
+        generateFieldDocument(field, "会话工厂");
         // 设置访问控制符
         field.setVisibility("private ");
         // 设置终结标志
@@ -153,17 +157,21 @@ public class DaoImplGenerator extends ClassGenerator {
         method.setVisibility("public ");
         // 设置构造函数标志
         method.setConstructor(true);
-        // 定义一个参数
-        Parameter parameter = new Parameter(sessionFactoryType, "sessionFactory");
-        // 为参数添加注解
-        parameter.addAnnotation("@Qualifier(\"sessionFactory\")");
         // 设置方法名
         method.setName(classType.getTypeName());
+        // 定义参数名字
+        String parameterName = "sessionFactory";
+        // 定义一个参数
+        Parameter parameter = new Parameter(sessionFactoryType, parameterName);
+        // 为参数添加注解
+        parameter.addAnnotation("@Qualifier(\"sessionFactory\")");
+        // 为方法添加参数
+        method.addParameter(parameter);
         // 添加方法语句
         method.addStatement("// 为属性赋值");
         method.addStatement("this.sessionFactory = sessionFactory;");
-        // 为方法添加参数
-        method.addParameter(parameter);
+        // 为方法添加文档注释
+        generateDocument(method, "构造注入会话工厂对象", parameterName, "会话工厂");
         // 为类添加方法
         class_.addMethod(method);
     }
