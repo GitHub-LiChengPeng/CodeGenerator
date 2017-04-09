@@ -40,26 +40,35 @@ public class POGenerator extends POJOGenerator {
     public Class generate() {
         // 新建一个类
         Class class_ = new Class();
-        // 设置类的类型
-        class_.setType(classType);
-        // 设置类的访问控制符
-        class_.setVisibility("public ");
+        // 设置类的文档注释
+        generateFileDocument(class_, table.getRemark());
         // 设置类的注解
         class_.addAnnotation("@Entity");
         class_.addAnnotation("@Table(name = \"" + table.getName() + "\")");
+        // 设置类的访问控制符
+        class_.setVisibility("public ");
+        // 设置类的类型
+        class_.setType(classType);
         // 获取表中的所有列
         List<Column> columns = table.getColumns();
         // 遍历列集合
         for (Column column : columns) {
             // 新建一个属性
             Field field = new Field();
+            // 为属性添加文档注释
+            generateFieldDocument(field, column.getRemark());
             // 设置属性的访问控制符
             field.setVisibility("private ");
             // 设置属性的类型
             field.setType(new TypeResolver().resolve(column.getType()));
             // 设置属性名
             field.setName(getColumnName(column));
-            // 为属性添加注解
+            // 如果该列是主键
+            if (column.isPrimaryKey()) {
+                // 为属性添加主键注解
+                field.addAnnotation("@Id");
+            }
+            // 为属性添加列标识注解
             field.addAnnotation("@Column(name = \"" + column.getName() + "\")");
             // 为类添加属性
             class_.addField(field);
