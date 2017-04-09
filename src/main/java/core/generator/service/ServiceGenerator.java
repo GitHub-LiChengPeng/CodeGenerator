@@ -24,5 +24,7 @@ public class ServiceGenerator extends InterfaceGenerator {
         super(table);
         // 实例化Service层接口的类型
         this.interfaceType = new Type(PackageUtils.SERVICE.getValue() + getTableName() + "Service");
+        // 初始化业务层接口的文档注释
+        this.comment = "业务层接口";
     }
 }
