@@ -135,4 +135,32 @@ public class StringUtils {
         // 返回对应的文件名
         return interface_.getType().getTypeName() + ".java";
     }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 去掉字符串末尾的点.
+     * </pre>
+     *
+     * @param content 字符串内容
+     * @return {@code java.lang.String} - 处理结果
+     */
+    public static String removeLastDot(String content) {
+        // 返回处理结果
+        return content.substring(0, content.length() - 1);
+    }
+
+    /**
+     * <strong>Description:</strong>
+     * <pre>
+     * 判断字符串是否是空串.
+     * </pre>
+     *
+     * @param content 字符串内容
+     * @return {@code boolean} - 判断结果
+     */
+    public static boolean isNotEmpty(String content) {
+        // 返回判断结果
+        return content != null && !"".equals(content.trim());
+    }
 }
