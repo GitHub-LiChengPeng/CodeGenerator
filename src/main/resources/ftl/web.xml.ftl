@@ -27,7 +27,7 @@
 
     <servlet-mapping>
         <servlet-name>DispatcherServlet</servlet-name>
-        <!-- 拦截所有请求包括静态资源，如要使用静态资源需要在SpringMVC配置文件中添加静态资源的映射。 -->
+        <!-- 拦截所有请求包括静态资源,如要使用静态资源需要在SpringMVC配置文件中添加静态资源的映射. -->
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
