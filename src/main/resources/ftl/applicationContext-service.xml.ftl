@@ -6,6 +6,6 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd">
-    <!-- 扫描包 -->
+    <!-- 扫描Service层的包 -->
     <context:component-scan base-package="${servicePackage}"/>
 </beans>
