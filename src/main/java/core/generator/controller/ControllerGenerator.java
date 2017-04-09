@@ -139,11 +139,17 @@ public class ControllerGenerator extends ClassGenerator {
         // 放入增加方法的基本信息
         putAddMethodInfo(method);
         // 为方法添加注解
-        method.addAnnotation("@RequestMapping(value = \"/add\")");
-        // 添加注释
-        method.addStatement("// 调用业务层接口添加实体对象");
+        method.addAnnotation("@RequestMapping(value = \"/add\", method = RequestMethod.POST)");
+        method.addAnnotation("@ResponseBody");
+        // 设置方法的返回值
+        method.setType(new Type("java.lang.String"));
+        // 为方法的参数添加注解
+        method.getParameters().get(0).addAnnotation("@RequestBody");
         // 添加方法语句
+        method.addStatement("// 调用业务层接口添加实体对象");
         method.addStatement(serviceName + ".addEntity(entity);");
+        method.addStatement("// 返回增加操作结果");
+        method.addStatement("return \"Add success!\";");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -161,14 +167,18 @@ public class ControllerGenerator extends ClassGenerator {
         Method method = new Method();
         // 放入删除方法的基本信息
         putDeleteMethodInfo(method);
+        // 为方法添加注解
+        method.addAnnotation("@RequestMapping(value = \"/delete/{id}\", method = RequestMethod.GET)");
+        method.addAnnotation("@ResponseBody");
+        // 设置方法的返回值
+        method.setType(new Type("java.lang.String"));
         // 为方法参数添加注解
         method.getParameters().get(0).addAnnotation("@PathVariable");
-        // 为方法添加注解
-        method.addAnnotation("@RequestMapping(value = \"/delete/{id}\")");
-        // 添加注释
-        method.addStatement("// 调用业务层接口删除实体对象");
         // 添加方法语句
+        method.addStatement("// 调用业务层接口删除实体对象");
         method.addStatement(serviceName + ".deleteEntity(id);");
+        method.addStatement("// 返回删除操作结果");
+        method.addStatement("return \"Delete success!\";");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -187,11 +197,17 @@ public class ControllerGenerator extends ClassGenerator {
         // 放入修改方法的基本信息
         putUpdateMethodInfo(method);
         // 为方法添加注解
-        method.addAnnotation("@RequestMapping(value = \"/update\")");
-        // 添加注释
-        method.addStatement("// 调用业务层接口修改实体对象");
+        method.addAnnotation("@RequestMapping(value = \"/update\", method = RequestMethod.POST)");
+        method.addAnnotation("@ResponseBody");
+        // 设置方法的返回值
+        method.setType(new Type("java.lang.String"));
+        // 为方法参数添加注解
+        method.getParameters().get(0).addAnnotation("@RequestBody");
         // 添加方法语句
+        method.addStatement("// 调用业务层接口修改实体对象");
         method.addStatement(serviceName + ".updateEntity(entity);");
+        method.addStatement("// 返回修改操作结果");
+        method.addStatement("return \"Update success!\";");
         // 为类添加方法
         class_.addMethod(method);
     }
@@ -212,7 +228,7 @@ public class ControllerGenerator extends ClassGenerator {
         // 为方法参数添加注解
         method.getParameters().get(0).addAnnotation("@PathVariable");
         // 为方法添加注解
-        method.addAnnotation("@RequestMapping(value = \"/read/{id}\")");
+        method.addAnnotation("@RequestMapping(value = \"/read/{id}\", method = RequestMethod.GET)");
         method.addAnnotation("@ResponseBody");
         // 添加注释
         method.addStatement("// 调用业务层接口查询实体对象");
@@ -236,7 +252,7 @@ public class ControllerGenerator extends ClassGenerator {
         // 放入查询方法的基本信息
         putReadAllMethodInfo(method);
         // 为方法添加注解
-        method.addAnnotation("@RequestMapping(value = \"/read\")");
+        method.addAnnotation("@RequestMapping(value = \"/read\", method = RequestMethod.GET)");
         method.addAnnotation("@ResponseBody");
         // 添加注释
         method.addStatement("// 调用业务层接口查询实体对象集合");
