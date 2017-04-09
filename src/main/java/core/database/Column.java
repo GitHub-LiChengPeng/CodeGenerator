@@ -5,46 +5,41 @@ package core.database;
  *
  * @author 李程鹏
  */
-public class Column {
-    /**
-     * 列名
-     */
-    private String name;
-
+public class Column extends DatabaseElement {
     /**
      * 列的类型
      */
     private int type;
 
     /**
-     * 列的注释
+     * 是否是主键列
      */
-    private String remark;
+    private boolean isPrimaryKey;
 
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 获取列名.
+     * 返回主键列标志.
      * </pre>
      *
-     * @return {@code java.lang.String} - 列名
+     * @return {@code boolean} - 主键列标志
      */
-    public String getName() {
-        // 返回列名
-        return name;
+    public boolean isPrimaryKey() {
+        // 返回标志
+        return isPrimaryKey;
     }
 
     /**
      * <strong>Description:</strong>
      * <pre>
-     * 设置列名.
+     * 设置主键列标志.
      * </pre>
      *
-     * @param name 列名
+     * @param isPrimaryKey 标志
      */
-    public void setName(String name) {
+    public void setPrimaryKey(boolean isPrimaryKey) {
         // 赋值
-        this.name = name;
+        this.isPrimaryKey = isPrimaryKey;
     }
 
     /**
@@ -71,31 +66,5 @@ public class Column {
     public void setType(int type) {
         // 赋值
         this.type = type;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 获取列的注释.
-     * </pre>
-     *
-     * @return {@code java.lang.String} - 列的注释
-     */
-    public String getRemark() {
-        // 返回列的注释
-        return remark;
-    }
-
-    /**
-     * <strong>Description:</strong>
-     * <pre>
-     * 设置列的注释.
-     * </pre>
-     *
-     * @param remark 列的注释
-     */
-    public void setRemark(String remark) {
-        // 赋值
-        this.remark = remark;
     }
 }
