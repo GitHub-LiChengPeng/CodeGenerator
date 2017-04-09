@@ -67,6 +67,8 @@ public class POGenerator extends POJOGenerator {
             if (column.isPrimaryKey()) {
                 // 为属性添加主键注解
                 field.addAnnotation("@Id");
+                // 为属性添加主键生成策略注解
+                field.addAnnotation("@GeneratedValue(strategy = GenerationType.IDENTITY)");
             }
             // 为属性添加列标识注解
             field.addAnnotation("@Column(name = \"" + column.getName() + "\")");
