@@ -152,7 +152,7 @@ public abstract class Generator {
      * @param paramName 参数名
      * @param paramDoc  参数的文档注释
      */
-    private void generateDocument(Method method, String methodDoc, String paramName, String paramDoc) {
+    protected void generateDocument(Method method, String methodDoc, String paramName, String paramDoc) {
         // 新建一个映射对象
         Map<String, String> map = new HashMap<>();
         // 将参数名和参数的注释映射关联起来
