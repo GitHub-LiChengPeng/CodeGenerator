@@ -46,4 +46,10 @@
         <!-- 拦截所有请求 -->
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
+    <!--不拦截SwaggerUI的内容-->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/swagger-ui/*</url-pattern>
+    </servlet-mapping>
 </web-app>

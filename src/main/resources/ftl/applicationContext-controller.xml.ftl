@@ -21,16 +21,6 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!--
-        设置资源映射
-        location:静态资源的位置
-        mapping:请求静态资源的格式
-    -->
-    <mvc:resources location="/Swagger/css/" mapping="css/**"/>
-    <mvc:resources location="/Swagger/fonts/" mapping="fonts/**"/>
-    <mvc:resources location="/Swagger/images/" mapping="images/**"/>
-    <mvc:resources location="/Swagger/lang/" mapping="lang/**"/>
-    <mvc:resources location="/Swagger/lib/" mapping="lib/**"/>
-    <mvc:resources location="/Swagger/" mapping="swagger-ui.js"/>
-    <mvc:resources location="/Swagger/" mapping="swagger-ui.min.js"/>
+    <!--Swagger与SpringMVC整合-->
+    <bean class="com.mangofactory.swagger.configuration.SpringSwaggerConfig"/>
 </beans>

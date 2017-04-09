@@ -81,6 +81,12 @@
             <artifactId>modelmapper</artifactId>
             <version>0.7.3</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.mangofactory</groupId>
+            <artifactId>swagger-springmvc</artifactId>
+            <version>0.9.5</version>
+        </dependency>
     </dependencies>
 
     <build>
