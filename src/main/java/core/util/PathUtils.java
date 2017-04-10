@@ -33,7 +33,11 @@ public enum PathUtils {
     // Spring配置文件生成的相对路径
     SPRING_CONFIG("\\src\\main\\resources\\"),
     // Hibernate配置文件生成的相对路径
-    HIBERNATE_CONFIG("\\src\\main\\resources\\");
+    HIBERNATE_CONFIG("\\src\\main\\resources\\"),
+    // SwaggerUI源文件的相对路径
+    SWAGGER_UI_FROM("\\src\\main\\resources\\swagger-ui\\"),
+    // SwaggerUI拷贝目的地的相对路径
+    SWAGGER_UI_TO("\\web\\swagger-ui\\");
 
     /**
      * 枚举值
