@@ -54,36 +54,45 @@ public class FileUtils {
      * @param to   目的文件
      */
     public static void copyFile(String from, String to) {
-        // 定义缓冲读取器
-        BufferedReader bufferedReader = null;
-        // 定义打印流对象
-        PrintStream printStream = null;
+        // 新建源文件对象
+        File sourceFile = new File(from);
+        // 新建目标文件对象
+        File destinationFile = new File(to);
+        // 定义文件输入流
+        FileInputStream fileInputStream = null;
+        // 定义文件输出流
+        FileOutputStream fileOutputStream = null;
         try {
-            // 初始化缓冲去读器
-            bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(from)));
-            // 初始化打印流对象
-            printStream = new PrintStream(new FileOutputStream(to));
-            // 定义行内容变量
-            String line;
-            // 读取数据
-            while ((line = bufferedReader.readLine()) != null) {
-                // 将读取到的内容打印到目标文件中
-                printStream.println(line);
-                // 刷新打印流对象
-                printStream.flush();
+            // 如果目标文件对象不存在
+            if (!destinationFile.exists()) {
+                // 新建一个目标文件对象
+                destinationFile.createNewFile();
+            }
+            // 初始化文件输入流
+            fileInputStream = new FileInputStream(sourceFile);
+            // 初始化文件输出流
+            fileOutputStream = new FileOutputStream(destinationFile);
+            // 创建字节数组,图片只能使用字节流的形式进行拷贝.
+            byte data[] = new byte[1024];
+            // 读取的字节数
+            int count = 0;
+            // 循环读取输入流的内容
+            while ((count = fileInputStream.read(data)) != -1) {
+                // 写出读取到的内容
+                fileOutputStream.write(data, 0, count);
             }
         } catch (Exception e) {
             // 如果出了异常,打印异常信息.
-            System.out.println("拷贝文件出错!");
+            System.out.println("拷贝文件过程出错!");
         } finally {
             try {
-                // 关闭缓冲读取器
-                if (bufferedReader != null) bufferedReader.close();
-                // 关闭打印流对象
-                if (printStream != null) printStream.close();
+                // 关闭文件输入流
+                if (fileInputStream != null) fileInputStream.close();
+                // 关闭文件输出流
+                if (fileOutputStream != null) fileOutputStream.close();
             } catch (IOException e) {
                 // 如果出了异常,打印异常信息.
-                System.out.println("关闭IO对象出错!");
+                System.out.println("关闭IO流对象出错!");
             }
         }
     }
