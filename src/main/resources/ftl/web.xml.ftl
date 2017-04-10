@@ -3,6 +3,11 @@
          xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          id="CodeGenerator" version="2.5">
+    <!-- 设置欢迎页为SwaggerUI的主页 -->
+    <welcome-file-list>
+        <welcome-file>swagger-ui/index.html</welcome-file>
+    </welcome-file-list>
+
     <!-- 用监听器初始化Spring容器 -->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
