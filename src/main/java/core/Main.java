@@ -2,6 +2,7 @@ package core;
 
 import core.database.DatabaseReader;
 import core.database.Table;
+import core.generator.SwaggerUIGenerator;
 import core.generator.config.*;
 import core.generator.controller.SpringMVCGenerator;
 import core.generator.dao.HibernateGenerator;
@@ -49,5 +50,7 @@ public class Main {
         new SpringMVCGenerator(tables).generate();
         // 生成配置文件
         new ConfigGenerator(database, username, password).generate();
+        // 生成SwaggerUI文件
+        new SwaggerUIGenerator().generate();
     }
 }
